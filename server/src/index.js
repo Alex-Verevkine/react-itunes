@@ -1,7 +1,6 @@
 //Get dependencies
 
 const express = require("express");
-const http = require("http");
 require("dotenv").config({ path: __dirname + "/../.env" });
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -14,7 +13,6 @@ const MongoStore = require("connect-mongo")(session);
 
 module.exports = (async () => {
   const app = express();
-  const csp = require("express-csp-header");
 
   /**
    * Establishing DB connection
@@ -22,10 +20,16 @@ module.exports = (async () => {
   console.log(__dirname);
   mongoose.Promise = Promise;
   try {
+    var uri =
+      "mongodb://alex:gdULKGaKCTiaAhBa@cluster0-shard-00-00-oq1jc.mongodb.net:27017,cluster0-shard-00-01-oq1jc.mongodb.net:27017,cluster0-shard-00-02-oq1jc.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true";
     await mongoose.connect(
-      process.env.SERVER_DB_CS,
+      uri,
       { useNewUrlParser: true }
     );
+    // await mongoose.connect(
+    //   process.env.SERVER_DB_CS,
+    //   { useNewUrlParser: true }
+    // );
     console.info("Successfully connected to database");
   } catch (err) {
     console.error({ err }, "DB connection failed.");

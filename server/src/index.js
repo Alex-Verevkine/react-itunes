@@ -17,19 +17,13 @@ module.exports = (async () => {
   /**
    * Establishing DB connection
    */
-  console.log(__dirname);
   mongoose.Promise = Promise;
   try {
-    var uri =
-      "mongodb://alex:gdULKGaKCTiaAhBa@cluster0-shard-00-00-oq1jc.mongodb.net:27017,cluster0-shard-00-01-oq1jc.mongodb.net:27017,cluster0-shard-00-02-oq1jc.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true";
+    var uri = process.env.SERVER_DB_CS;
     await mongoose.connect(
       uri,
       { useNewUrlParser: true }
     );
-    // await mongoose.connect(
-    //   process.env.SERVER_DB_CS,
-    //   { useNewUrlParser: true }
-    // );
     console.info("Successfully connected to database");
   } catch (err) {
     console.error({ err }, "DB connection failed.");

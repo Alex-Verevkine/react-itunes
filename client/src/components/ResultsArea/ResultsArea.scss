@@ -1,0 +1,23 @@
+.ResultsArea {
+  display: flex;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  padding: 24px;
+}
+
+.ResultItem {
+  display: flex;
+  padding: 0.5em;
+  width: 100%;
+  box-sizing: border-box;
+}
+@media all and (min-width: 40em) {
+  .ResultItem {
+    width: 50%;
+  }
+}
+@media all and (min-width: 60em) {
+  .ResultItem {
+    width: 33.33%;
+  }
+}

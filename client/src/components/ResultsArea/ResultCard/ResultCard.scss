@@ -1,0 +1,18 @@
+.ResultCard {
+  width: 100%;
+
+  .CardActionArea {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+.CardMedia {
+  width: 200px;
+  height: 200px;
+  border-radius: 100px;
+  margin: 0 auto;
+}

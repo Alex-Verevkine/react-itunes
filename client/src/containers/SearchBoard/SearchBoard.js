@@ -86,8 +86,6 @@ class SearchBoard extends Component {
       resultsArea = <Spinner />;
     }
 
-    console.log("my State", this.props.storeData.userPersonal.isLogedIn);
-
     let searchBoardContent = this.props.storeData.userPersonal.isLogedIn ? (
       <>
         <ItunesSearchBar

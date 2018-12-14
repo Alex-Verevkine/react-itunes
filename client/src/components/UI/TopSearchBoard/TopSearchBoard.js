@@ -5,8 +5,6 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Chip from "@material-ui/core/Chip";
 import classes from "./TopSearchBoard.scss";
 const topSearchBoard = props => {
-  console.log("top", props.terms);
-
   return (
     <Dialog open={props.terms.length} onClose={props.dialogClose}>
       <DialogTitle>Choose top</DialogTitle>

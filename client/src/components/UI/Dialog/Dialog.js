@@ -5,8 +5,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControl from "@material-ui/core/FormControl";
+
 class DialogFrom extends Component {
   state = {
     isFormValid: false,
@@ -35,7 +34,6 @@ class DialogFrom extends Component {
     for (const key in updatedOrderForm) {
       isFormValid = updatedOrderForm[key].isValid && isFormValid;
     }
-    debugger;
     this.setState({ inputs: updatedOrderForm, isFormValid: isFormValid });
   };
 

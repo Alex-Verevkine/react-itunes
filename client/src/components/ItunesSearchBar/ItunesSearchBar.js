@@ -16,11 +16,13 @@ const itunesSearchBar = props => {
   return (
     <nav className={classes.ItunesSearchBar}>
       {topSearchDialog}
-      <Input
-        label="Search"
-        value={props.searchTerm}
-        changed={props.valueChanged}
-      />
+      <div className={classes.Input}>
+        <Input
+          label="Search"
+          value={props.searchTerm}
+          changed={props.valueChanged}
+        />
+      </div>
       <FloatingButton clicked={props.submitted} />
       <Button
         color="secondary"

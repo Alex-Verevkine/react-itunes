@@ -4,8 +4,15 @@
   height: 80px;
   justify-content: center;
   align-items: center;
+  padding: 24px 20px;
+  box-sizing: border-box;
+
   .TopSearch {
     height: 56px;
     margin: 8px;
+  }
+
+  .Input {
+    flex-grow: 1;
   }
 }

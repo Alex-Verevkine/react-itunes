@@ -20,6 +20,9 @@ module.exports = class UserController {
       await req.session.save();
       ResponseMiddlewares.sendResponseData(res, requestedUser, next);
     } catch (error) {
+      if (error.code === 11000) {
+        error = new Error("User with current name already exists!");
+      }
       next(error);
     }
   }
@@ -30,6 +33,9 @@ module.exports = class UserController {
         userName: req.body.userName,
         password: req.body.password
       });
+      if (!requestedUser) {
+        throw new Error("This user doesn't exist!");
+      }
       req.session.userId = requestedUser._id.toString();
       req.session.cookie.expires = new Date(Date.now() + 36000000);
       req.session.cookie.maxAge = 36000000;

@@ -10,6 +10,7 @@ class Layout extends Component {
   state = {
     modalTypeOpened: ""
   };
+
   async componentWillMount() {
     try {
       const response = await AxiosDBInstance.get("/user");
@@ -19,17 +20,14 @@ class Layout extends Component {
       });
     } catch (error) {
       this.props.onStoreResult({ isLogedIn: false });
-      console.log(error);
     }
   }
 
   openRegisterModalHandler = () => {
-    debugger;
     this.setState({ modalTypeOpened: "register" });
   };
 
   openSignInModalHandler = () => {
-    debugger;
     this.setState({ modalTypeOpened: "logIn" });
   };
 
@@ -38,51 +36,35 @@ class Layout extends Component {
   };
 
   registerHandler = async userCredentials => {
-    try {
-      const response = await AxiosDBInstance.post("/user", userCredentials);
-      this.props.onStoreResult({
-        isLogedIn: true,
-        userPersonalData: response.data.obj
-      });
-      this.setState({ modalTypeOpened: "" });
-    } catch (error) {
-      console.log(error);
-    }
+    const response = await AxiosDBInstance.post("/user", userCredentials);
+    this.props.onStoreResult({
+      isLogedIn: true,
+      userPersonalData: response.data.obj
+    });
+    this.setState({ modalTypeOpened: "" });
   };
 
   signInHandler = async userCredentials => {
-    try {
-      const response = await AxiosDBInstance.post(
-        "/user/login",
-        userCredentials
-      );
-      this.props.onStoreResult({
-        isLogedIn: true,
-        userPersonalData: response.data.obj
-      });
-      this.setState({ modalTypeOpened: "" });
-    } catch (error) {
-      console.log(error);
-    }
+    const response = await AxiosDBInstance.post("/user/login", userCredentials);
+    this.props.onStoreResult({
+      isLogedIn: true,
+      userPersonalData: response.data.obj
+    });
+    this.setState({ modalTypeOpened: "" });
   };
 
   logoutHandler = async () => {
-    try {
-      await AxiosDBInstance.get("/user/logout");
-      this.props.onStoreResult({
-        isLogedIn: false,
-        userPersonalData: []
-      });
-      this.setState({ modalTypeOpened: "" });
-      this.props.onSetResult({ content: [] });
-      this.props.history.replace("/");
-    } catch (error) {
-      console.log(error);
-    }
+    await AxiosDBInstance.get("/user/logout");
+    this.props.onStoreResult({
+      isLogedIn: false,
+      userPersonalData: []
+    });
+    this.setState({ modalTypeOpened: "" });
+    this.props.onSetResult([]);
+    this.props.history.replace("/");
   };
 
   render() {
-    debugger;
     let dialog;
     switch (this.state.modalTypeOpened) {
       case "logIn":

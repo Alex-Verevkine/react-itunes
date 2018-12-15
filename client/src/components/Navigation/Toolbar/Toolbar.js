@@ -15,10 +15,10 @@ const toolbar = props => {
             Log Out
           </Button>
         ) : (
-          <>
+          <div className={classes.UnauthorisedBtns}>
             <Button click={props.onSingIn}>Log In</Button>
             <Button click={props.onRegister}>Register</Button>
-          </>
+          </div>
         )}
       </div>
     </header>

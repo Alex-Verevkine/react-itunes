@@ -5,7 +5,6 @@ import ResultsArea from "../../components/ResultsArea/ResultsArea";
 import AxiosDBInstance from "../../axios-orders";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import * as actionTypes from "../../store/actions";
-import util from "util";
 class SearchBoard extends Component {
   state = {
     searchTerm: "",
@@ -36,7 +35,6 @@ class SearchBoard extends Component {
       this.setState({ isLoading: false });
     } catch (error) {
       this.setState({ isLoading: false });
-      console.log(error);
     }
   };
 
@@ -45,30 +43,22 @@ class SearchBoard extends Component {
   };
 
   showTopSearchesHandler = async () => {
-    try {
-      const topTerms = await AxiosDBInstance.get(
-        `/user/terms/${this.props.storeData.userPersonal.userPersonalData._id}`
-      );
-      this.setState({ topTerms: topTerms.data.obj });
-    } catch (error) {
-      console.log(error);
-    }
+    const topTerms = await AxiosDBInstance.get(
+      `/user/terms/${this.props.storeData.userPersonal.userPersonalData._id}`
+    );
+    this.setState({ topTerms: topTerms.data.obj });
   };
 
   choosedTermHandler = async choosedTerm => {
-    try {
-      this.setState(
-        {
-          searchTerm: choosedTerm,
-          topTerms: []
-        },
-        () => {
-          this.searchSubmitHandler();
-        }
-      );
-    } catch (error) {
-      console.log(error);
-    }
+    this.setState(
+      {
+        searchTerm: choosedTerm,
+        topTerms: []
+      },
+      () => {
+        this.searchSubmitHandler();
+      }
+    );
   };
 
   topTermsDialogClosedHandler = () => {

@@ -23,6 +23,7 @@ class ItunesElement extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+  console.log("test state", state);
   return {
     content: state.itunesContent.content.find(element => {
       return element.trackId.toString() === ownProps.match.params.elementId;

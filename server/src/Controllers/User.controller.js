@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 const UserModel = require("../Models/User.model.js");
 const ResponseMiddlewares = require("../Middlewares/Response.middlwares");
 module.exports = class UserController {
+  /**
+   * @desc Request from DB User Document by provided User ID.
+   */
   async get(req, res, next) {
     try {
       const requestedUser = await UserModel.findById(req.session.userId).lean();
@@ -11,6 +14,10 @@ module.exports = class UserController {
     }
   }
 
+  /**
+   * @desc Create, Store and Returns new User Document in DB Collection with provided UserName and Password.
+   * Also stores Current User on Session.
+   */
   async post(req, res, next) {
     try {
       const requestedUser = await UserModel.create(req.body);
@@ -27,6 +34,10 @@ module.exports = class UserController {
     }
   }
 
+  /**
+   * @desc Retrieves requested User Document by provided UserName and Password.
+   * Also stores Current User on Session.
+   */
   async login(req, res, next) {
     try {
       const requestedUser = await UserModel.findOne({
@@ -46,11 +57,17 @@ module.exports = class UserController {
     }
   }
 
+  /**
+   * @desc Destroys current User Session.
+   */
   async logout(req, res, next) {
     await req.session.destroy();
     ResponseMiddlewares.sendResponseData(res, null, next);
   }
 
+  /**
+   * @desc Push provided user search term to Current User with provided UserId.
+   */
   async updateSearchQueries(req, res, next) {
     try {
       const updateResponse = await UserModel.update(
@@ -63,6 +80,9 @@ module.exports = class UserController {
     }
   }
 
+  /**
+   * @desc Retrieves Top 10 mostly searched queries by Current user with provided User ID.
+   */
   async getTopTerms(req, res, next) {
     try {
       const requestedTerms = (await UserModel.aggregate([

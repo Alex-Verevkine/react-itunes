@@ -4,6 +4,10 @@ import FloatingButton from "../UI/FloatingButton/FloatingButton";
 import classes from "./ItunesSearchar.scss";
 import Button from "../UI/Button/Button";
 import TopSearchBoard from "../UI/TopSearchBoard/TopSearchBoard";
+
+/**
+ * @desc Search Bar Component, that contains all itunes search elements.
+ */
 const itunesSearchBar = props => {
   let topSearchDialog =
     !props.topTerms && !props.topTerms.length ? null : (

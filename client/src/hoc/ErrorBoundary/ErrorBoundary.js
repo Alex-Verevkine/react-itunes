@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import CloseIcon from "@material-ui/icons/Close";
 import { Snackbar, IconButton, SnackbarContent } from "@material-ui/core";
 import AxiosDBInstance from "../../axios-orders";
-
+/**
+ * @desc High Order Component Layout, wrappes requested component and catch all Errors.
+ */
 class ErrorBoundary extends Component {
   state = {
     isError: false,

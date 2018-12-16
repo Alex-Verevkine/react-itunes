@@ -16,6 +16,7 @@ module.exports = class ResponseMiddlewares {
       err.data && process.env.SERVICE_ENV != "production" ? err.data : null
     );
   }
+
   /** Setting Response Data on the response obj and calls next function
    * @param  {} res res Object
    * @param  {} responseData Response Data

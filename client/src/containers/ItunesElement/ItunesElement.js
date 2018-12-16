@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import ItunesElementContent from "../../components/ItunesElementContent/ItunesElementContent";
 import { connect } from "react-redux";
 
+/**
+ * @desc Itunes Element Container, contains detaild page view.
+ */
 class ItunesElement extends Component {
   constructor(props) {
     super(props);

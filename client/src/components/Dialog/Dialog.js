@@ -6,6 +6,9 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
+/**
+ * @desc Dialog Component, that holds the state with requested user credentilas.
+ */
 class DialogFrom extends Component {
   state = {
     isFormValid: false,

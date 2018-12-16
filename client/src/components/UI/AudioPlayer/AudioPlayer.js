@@ -1,4 +1,8 @@
 import React from "react";
+
+/**
+ * @desc Audio Player View.
+ */
 const audioPlayer = props => {
   return (
     <audio controls preload="none" style={{ width: "100%" }}>

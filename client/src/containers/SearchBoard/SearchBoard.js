@@ -5,6 +5,10 @@ import ResultsArea from "../../components/ResultsArea/ResultsArea";
 import AxiosDBInstance from "../../axios-orders";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import * as actionTypes from "../../store/actions";
+
+/**
+ * @desc Search Board Container, holds all search itunes state data.
+ */
 class SearchBoard extends Component {
   state = {
     searchTerm: "",
@@ -12,10 +16,17 @@ class SearchBoard extends Component {
     topTerms: []
   };
 
+  /**
+   * @desc Updates searchTerm parameter on the state with new value.
+   * @param  {} event  Current element event object.
+   */
   searchTermChangedHandler = event => {
     this.setState({ searchTerm: event.target.value });
   };
 
+  /**
+   * @desc Request results by provided searchTerm XHR Request Event Handler.
+   */
   searchSubmitHandler = async () => {
     try {
       this.setState({ isLoading: true });
@@ -38,6 +49,10 @@ class SearchBoard extends Component {
     }
   };
 
+  /**
+   * @desc Routes to Detailed Itunes Object Page.
+   * @param  {} cardId Selected Itunes Object
+   */
   cardClickHandler = cardId => {
     this.props.history.push(`/${cardId}`);
   };

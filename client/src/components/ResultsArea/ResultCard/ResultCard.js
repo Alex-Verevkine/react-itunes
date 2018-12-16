@@ -9,8 +9,9 @@ import VideoIcon from "@material-ui/icons/Videocam";
 import SpeakerIcon from "@material-ui/icons/Speaker";
 import classes from "./ResultCard.scss";
 
-//Videocam
-//Speaker
+/**
+ * @desc Itunes Result Card That Contains Short view about itunes object.
+ */
 const resultCard = props => {
   let contentTypeIcon;
   switch (props.cardData.kind) {

@@ -3,6 +3,9 @@ import classes from "./Toolbar.scss";
 import Logo from "../../UI/Logo/Logo";
 import Button from "../../UI/Button/Button";
 
+/**
+ * @desc Toolbar Component, that contains all top header elements.
+ */
 const toolbar = props => {
   return (
     <header className={classes.Toolbar}>

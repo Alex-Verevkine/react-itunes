@@ -1,6 +1,10 @@
 import React from "react";
 import ResultCard from "./ResultCard/ResultCard";
 import classes from "./ResultsArea.scss";
+
+/**
+ * @desc Itunes Requested Results Cards Area Component.
+ */
 const resultsArea = props => {
   return (
     <section className={classes.ResultsArea}>

@@ -1,4 +1,8 @@
 import React from "react";
+
+/**
+ * @desc Video Player View.
+ */
 const videoPlayer = props => {
   return (
     <video width="100%" controls="controls" preload="none">

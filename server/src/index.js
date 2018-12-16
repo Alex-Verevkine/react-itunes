@@ -1,5 +1,4 @@
 //Get dependencies
-
 const express = require("express");
 require("dotenv").config({ path: __dirname + "/../.env" });
 const bodyParser = require("body-parser");
@@ -92,7 +91,7 @@ module.exports = (async () => {
   //Get port from environment and store in Express.
   const port = process.env.SERVER_PORT;
 
-  app.set("port");
+  app.set("port", port);
 
   app.listen(port, () => {
     console.info("Running on port: ", port);

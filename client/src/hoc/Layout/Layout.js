@@ -2,10 +2,14 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import classes from "./Layout.scss";
 import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
-import Dialog from "../../components/UI/Dialog/Dialog";
+import Dialog from "../../components/Dialog/Dialog";
 import AxiosDBInstance from "../../axios-orders";
 import * as actionTypes from "../../store/actions";
 import { withRouter } from "react-router-dom";
+
+/**
+ * @desc High Order Component Layout, wrappes all application content.
+ */
 class Layout extends Component {
   state = {
     modalTypeOpened: ""
@@ -23,18 +27,31 @@ class Layout extends Component {
     }
   }
 
+  /**
+   * @desc Open Register modal Event Handler
+   */
   openRegisterModalHandler = () => {
     this.setState({ modalTypeOpened: "register" });
   };
 
+  /**
+   * @desc Open SignIn modal Event Handler
+   */
   openSignInModalHandler = () => {
     this.setState({ modalTypeOpened: "logIn" });
   };
 
+  /**
+   * @desc Colose opened modal Event Handler
+   */
   closeModalHandler = () => {
     this.setState({ modalTypeOpened: "" });
   };
 
+  /**
+   * @desc Register new User XHR Request Event Handler
+   * @param  {} userCredentials New User Credentials
+   */
   registerHandler = async userCredentials => {
     const response = await AxiosDBInstance.post("/user", userCredentials);
     this.props.onStoreResult({
@@ -44,6 +61,10 @@ class Layout extends Component {
     this.setState({ modalTypeOpened: "" });
   };
 
+  /**
+   * @desc Sign In with existing User XHR Request Event Handler
+   * @param  {} userCredentials Provided User Credential
+   */
   signInHandler = async userCredentials => {
     const response = await AxiosDBInstance.post("/user/login", userCredentials);
     this.props.onStoreResult({
@@ -53,6 +74,9 @@ class Layout extends Component {
     this.setState({ modalTypeOpened: "" });
   };
 
+  /**
+   * @desc Log Out XHR Request Event Handler.
+   */
   logoutHandler = async () => {
     await AxiosDBInstance.get("/user/logout");
     this.props.onStoreResult({

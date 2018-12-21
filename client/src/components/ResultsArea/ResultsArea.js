@@ -13,7 +13,7 @@ const resultsArea = props => {
           <ResultCard
             cardData={element}
             clicked={() => {
-              props.cardClicked(element.trackId);
+              props.cardClicked(element);
             }}
           />
         </article>

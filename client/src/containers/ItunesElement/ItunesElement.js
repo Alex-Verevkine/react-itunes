@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ItunesElementContent from "../../components/ItunesElementContent/ItunesElementContent";
 import { connect } from "react-redux";
+import { checkIfSelectedMediaItemExists } from "../../store/actions";
 
 /**
  * @desc Itunes Element Container, contains detaild page view.
@@ -8,30 +9,22 @@ import { connect } from "react-redux";
 class ItunesElement extends Component {
   constructor(props) {
     super(props);
-    if (!props.content) {
-      props.history.replace("/");
-    }
+    this.props.checkIfSelectedMediaItemExists();
   }
-  //   componentWillMount() {}
-
   render() {
-    let elementContent = this.props.content ? (
-      <ItunesElementContent content={this.props.content} />
+    return this.props.mediaItem ? (
+      <ItunesElementContent content={this.props.mediaItem} />
     ) : null;
-    return <>{elementContent}</>;
-    //   <div>
-    //     itunes Element {this.props.content && this.props.content.trackId}
-    //   </div>
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log("test state", state);
   return {
-    content: state.itunesContent.content.find(element => {
-      return element.trackId.toString() === ownProps.match.params.elementId;
-    })
+    mediaItem: state.media.selectedMediaItem
   };
 };
 
-export default connect(mapStateToProps)(ItunesElement);
+export default connect(
+  mapStateToProps,
+  { checkIfSelectedMediaItemExists }
+)(ItunesElement);

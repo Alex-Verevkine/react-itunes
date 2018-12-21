@@ -1,23 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import { createStore, combineReducers } from "redux";
 import "./index.scss";
-import App from "./App";
+import App from "../src/containers/App/App";
 import * as serviceWorker from "./serviceWorker";
-import { BrowserRouter } from "react-router-dom";
-import itunesResultReducer from "./store/reducers/itunesResult";
-import userReducer from "./store/reducers/user";
-const rootReducer = combineReducers({
-  itunesContent: itunesResultReducer,
-  userPersonal: userReducer
-});
-const store = createStore(rootReducer);
+import { ConnectedRouter } from "connected-react-router";
+import store, { history } from "./store/store.config";
+
 const app = (
   <Provider store={store}>
-    <BrowserRouter>
+    <ConnectedRouter history={history}>
       <App />
-    </BrowserRouter>
+    </ConnectedRouter>
   </Provider>
 );
 ReactDOM.render(app, document.getElementById("root"));

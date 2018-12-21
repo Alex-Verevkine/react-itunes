@@ -1,19 +1,22 @@
 const express = require("express");
-const AuthController = require("../Controllers/Auth.controller");
-const ItunesController = require("../Controllers/Itunes.controller");
+const { AuthAPI, MediaAPI } = require("../API");
 const ResponseMiddlewares = require("../Middlewares/Response.middlwares");
 module.exports = (() => {
   const router = express.Router();
-  const authController = new AuthController();
-  const itunesController = new ItunesController();
+  const authAPI = new AuthAPI();
+  const mediaAPI = new MediaAPI();
 
   router
     .route("/getItune/:term")
     .get([
-      authController.checkAuthMiddleware.bind(authController),
-      itunesController.get,
-      ResponseMiddlewares.responseHandlerMiddlware.bind(ResponseMiddlewares)
+      authAPI.checkAuthMiddleware.bind(authAPI),
+      mediaAPI.get.bind(mediaAPI)
     ]);
+
+  router.use(
+    "*",
+    ResponseMiddlewares.responseHandlerMiddlware.bind(ResponseMiddlewares)
+  );
 
   return router;
 })();

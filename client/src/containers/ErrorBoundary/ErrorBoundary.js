@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import CloseIcon from "@material-ui/icons/Close";
 import { Snackbar, IconButton, SnackbarContent } from "@material-ui/core";
-import AxiosDBInstance from "../../axios-orders";
+import { APIAxiosInstance } from "../../http_clients";
 /**
  * @desc High Order Component Layout, wrappes requested component and catch all Errors.
  */
@@ -18,12 +18,12 @@ class ErrorBoundary extends Component {
     this.setState({ error: error, isError: true });
   }
   componentWillMount() {
-    this.reqIntercetor = AxiosDBInstance.interceptors.request.use(req => {
+    this.reqIntercetor = APIAxiosInstance.interceptors.request.use(req => {
       clearTimeout(this.timerOneAtTheTimeId);
       this.setState({ error: null, isError: false });
       return req;
     });
-    this.resIntercetor = AxiosDBInstance.interceptors.response.use(
+    this.resIntercetor = APIAxiosInstance.interceptors.response.use(
       null,
       error => {
         clearTimeout(this.timerOneAtTheTimeId);
@@ -37,8 +37,8 @@ class ErrorBoundary extends Component {
 
   componentWillUnmount() {
     clearTimeout(this.timerOneAtTheTimeId);
-    AxiosDBInstance.interceptors.request.eject(this.reqIntercetor);
-    AxiosDBInstance.interceptors.response.eject(this.resIntercetor);
+    APIAxiosInstance.interceptors.request.eject(this.reqIntercetor);
+    APIAxiosInstance.interceptors.response.eject(this.resIntercetor);
   }
 
   errorConfirmedHandler = () => {

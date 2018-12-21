@@ -2,9 +2,13 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import ItunesSearchBar from "../../components/ItunesSearchBar/ItunesSearchBar";
 import ResultsArea from "../../components/ResultsArea/ResultsArea";
-import AxiosDBInstance from "../../axios-orders";
 import Spinner from "../../components/UI/Spinner/Spinner";
-import * as actionTypes from "../../store/actions";
+import {
+  searchMediaByTerm,
+  selectMedia,
+  getTopNTerms,
+  closeTopTermsDialog
+} from "../../store/actions";
 
 /**
  * @desc Search Board Container, holds all search itunes state data.
@@ -12,8 +16,7 @@ import * as actionTypes from "../../store/actions";
 class SearchBoard extends Component {
   state = {
     searchTerm: "",
-    isLoading: false,
-    topTerms: []
+    topSearchedTermsAmount: 10
   };
 
   /**
@@ -28,85 +31,63 @@ class SearchBoard extends Component {
    * @desc Request results by provided searchTerm XHR Request Event Handler.
    */
   searchSubmitHandler = async () => {
-    try {
-      this.setState({ isLoading: true });
-
-      const res = await AxiosDBInstance.get(
-        `/itunes/getItune/${encodeURI(this.state.searchTerm)}`
-      );
-      this.props.onSetResult(res.data.obj.results);
-      await AxiosDBInstance.put(
-        `/user/updateQueries/${
-          this.props.storeData.userPersonal.userPersonalData._id
-        }`,
-        {
-          searchQuery: this.state.searchTerm
-        }
-      );
-      this.setState({ isLoading: false });
-    } catch (error) {
-      this.setState({ isLoading: false });
-    }
+    this.props.searchMediaByTerm(this.state.searchTerm);
   };
 
   /**
    * @desc Routes to Detailed Itunes Object Page.
-   * @param  {} cardId Selected Itunes Object
+   * @param  {} mediaData Selected Itunes Object
    */
-  cardClickHandler = cardId => {
-    this.props.history.push(`/${cardId}`);
+  cardClickHandler = mediaData => {
+    this.props.selectMedia(mediaData);
   };
 
   showTopSearchesHandler = async () => {
-    const topTerms = await AxiosDBInstance.get(
-      `/user/terms/${this.props.storeData.userPersonal.userPersonalData._id}`
-    );
-    this.setState({ topTerms: topTerms.data.obj });
+    this.props.getTopNTerms(this.state.topSearchedTermsAmount);
+    this.setState({ isTopTermsDialogOpened: true });
   };
 
   choosedTermHandler = async choosedTerm => {
     this.setState(
       {
-        searchTerm: choosedTerm,
-        topTerms: []
+        searchTerm: choosedTerm
       },
       () => {
+        this.props.closeTopTermsDialog();
         this.searchSubmitHandler();
       }
     );
   };
 
   topTermsDialogClosedHandler = () => {
-    this.setState({ topTerms: [] });
+    this.props.closeTopTermsDialog();
   };
 
   render() {
-    let resultsArea = this.props.storeData.itunesContent.content.length ? (
+    let resultsArea = this.props.media.results ? (
       <ResultsArea
-        content={this.props.storeData.itunesContent.content}
+        content={this.props.media.results}
         cardClicked={this.cardClickHandler}
       />
     ) : null;
-    if (this.state.isLoading) {
+    if (this.props.isLoading) {
       resultsArea = <Spinner />;
     }
 
-    let searchBoardContent = this.props.storeData.userPersonal.isLogedIn ? (
+    let searchBoardContent = this.props.isLoggedIn ? (
       <>
         <ItunesSearchBar
-          userId={
-            this.props.storeData.userPersonal.userPersonalData &&
-            this.props.storeData.userPersonal.userPersonalData._id
-          }
+          userId={this.props.userId}
           searchTerm={this.state.searchTerm}
           valueChanged={event => {
             this.searchTermChangedHandler(event);
           }}
           submitted={this.searchSubmitHandler}
           showTopSearches={this.showTopSearchesHandler}
-          topTerms={this.state.topTerms}
+          topTerms={this.props.topTerms}
           choosedTerm={this.choosedTermHandler}
           closed={this.topTermsDialogClosedHandler}
+          isTopTermsDialogOpened={this.props.isTopTermsDialogOpened}
         />
         {resultsArea}
       </>
@@ -117,17 +98,16 @@ class SearchBoard extends Component {
 
 const mapStateToProps = state => {
   return {
-    storeData: state
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onSetResult: result => dispatch({ type: actionTypes.SET, result })
+    topTerms: state.media.topTerms,
+    isLoggedIn: state.auth.isLoggedIn,
+    userId: state.auth.user._id,
+    media: state.media.media,
+    isLoading: state.ui.isLoading,
+    isTopTermsDialogOpened: state.ui.isTopTermsDialogOpened
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  { searchMediaByTerm, selectMedia, getTopNTerms, closeTopTermsDialog }
 )(SearchBoard);

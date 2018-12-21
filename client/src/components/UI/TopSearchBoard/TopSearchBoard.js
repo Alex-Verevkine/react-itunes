@@ -10,7 +10,7 @@ import classes from "./TopSearchBoard.scss";
  */
 const topSearchBoard = props => {
   return (
-    <Dialog open={props.terms.length} onClose={props.dialogClose}>
+    <Dialog open={props.isOpened} onClose={props.dialogClose}>
       <DialogTitle>Choose top</DialogTitle>
       <DialogContent>
         {props.terms.map(term => (

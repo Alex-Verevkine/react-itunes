@@ -3,12 +3,10 @@ import { connect } from "react-redux";
 import classes from "./Layout.scss";
 import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
 import Dialog from "../../components/Dialog/Dialog";
-import AxiosDBInstance from "../../axios-orders";
-import * as actionTypes from "../../store/actions";
-import { withRouter } from "react-router-dom";
+import { fetchUser, register, signIn, logOut } from "../../store/actions";
 
 /**
- * @desc High Order Component Layout, wrappes all application content.
+ * @desc Component Layout, wrappes all application content.
  */
 class Layout extends Component {
   state = {
@@ -16,15 +14,7 @@ class Layout extends Component {
   };
 
   async componentWillMount() {
-    try {
-      const response = await AxiosDBInstance.get("/user");
-      this.props.onStoreResult({
-        isLogedIn: true,
-        userPersonalData: response.data.obj
-      });
-    } catch (error) {
-      this.props.onStoreResult({ isLogedIn: false });
-    }
+    this.props.fetchUser();
   }
 
   /**
@@ -53,11 +43,8 @@ class Layout extends Component {
    * @param  {} userCredentials New User Credentials
    */
   registerHandler = async userCredentials => {
-    const response = await AxiosDBInstance.post("/user", userCredentials);
-    this.props.onStoreResult({
-      isLogedIn: true,
-      userPersonalData: response.data.obj
-    });
+    const { userName, password } = userCredentials;
+    this.props.register(userName, password);
     this.setState({ modalTypeOpened: "" });
   };
 
@@ -66,11 +53,8 @@ class Layout extends Component {
    * @param  {} userCredentials Provided User Credential
    */
   signInHandler = async userCredentials => {
-    const response = await AxiosDBInstance.post("/user/login", userCredentials);
-    this.props.onStoreResult({
-      isLogedIn: true,
-      userPersonalData: response.data.obj
-    });
+    const { userName, password } = userCredentials;
+    this.props.signIn(userName, password);
     this.setState({ modalTypeOpened: "" });
   };
 
@@ -78,14 +62,7 @@ class Layout extends Component {
    * @desc Log Out XHR Request Event Handler.
    */
   logoutHandler = async () => {
-    await AxiosDBInstance.get("/user/logout");
-    this.props.onStoreResult({
-      isLogedIn: false,
-      userPersonalData: []
-    });
-    this.setState({ modalTypeOpened: "" });
-    this.props.onSetResult([]);
-    this.props.history.replace("/");
+    this.props.logOut();
   };
 
   render() {
@@ -121,7 +98,8 @@ class Layout extends Component {
     return (
       <>
         <Toolbar
-          isLogedIn={this.props.userDataStore.isLogedIn}
+          isLoggedIn={this.props.isLoggedIn}
+          showActions={this.props.isAuthChecked}
           onRegister={this.openRegisterModalHandler}
           onSingIn={this.openSignInModalHandler}
           onLogout={this.logoutHandler}
@@ -135,19 +113,12 @@ class Layout extends Component {
 
 const mapStateToProps = state => {
   return {
-    userDataStore: state.userPersonal
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onStoreResult: result =>
-      dispatch({ type: actionTypes.STORE_RESULT, data: result }),
-    onSetResult: result => dispatch({ type: actionTypes.SET, result })
+    isLoggedIn: state.auth.isLoggedIn,
+    isAuthChecked: state.auth.isAuthChecked
   };
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
-)(withRouter(Layout));
+  { fetchUser, register, signIn, logOut }
+)(Layout);

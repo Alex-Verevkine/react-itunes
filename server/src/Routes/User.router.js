@@ -1,56 +1,37 @@
 const express = require("express");
+const { AuthAPI, UserAPI } = require("../API");
 const AuthController = require("../Controllers/Auth.controller");
 const UserController = require("../Controllers/User.controller");
 const ResponseMiddlewares = require("../Middlewares/Response.middlwares");
 module.exports = (() => {
   const router = express.Router();
-  const authController = new AuthController();
-  const userController = new UserController();
+  const authAPI = new AuthAPI();
+  const userAPI = new UserAPI();
 
-  router
-    .route("/")
-    .post([
-      userController.post,
-      ResponseMiddlewares.responseHandlerMiddlware.bind(ResponseMiddlewares)
-    ]);
+  router.route("/").post([userAPI.create.bind(userAPI)]);
 
-  router
-    .route("/login")
-    .post([
-      userController.login,
-      ResponseMiddlewares.responseHandlerMiddlware.bind(ResponseMiddlewares)
-    ]);
+  router.route("/login").post([userAPI.login.bind(userAPI)]);
 
-  router
-    .route("/logout")
-    .get([
-      userController.logout,
-      ResponseMiddlewares.responseHandlerMiddlware.bind(ResponseMiddlewares)
-    ]);
+  router.route("/logout").get([userAPI.logout.bind(userAPI)]);
 
-  router
-    .route("/")
-    .get([
-      authController.checkAuthMiddleware.bind(authController),
-      userController.get,
-      ResponseMiddlewares.responseHandlerMiddlware.bind(ResponseMiddlewares)
-    ]);
+  router.route("/").get([userAPI.get.bind(userAPI)]);
 
   router
     .route("/updateQueries/:userId")
     .put([
-      authController.checkAuthMiddleware.bind(authController),
-      userController.updateSearchQueries,
-      ResponseMiddlewares.responseHandlerMiddlware.bind(ResponseMiddlewares)
+      authAPI.checkAuthMiddleware.bind(authAPI),
+      userAPI.updateSearchQueries.bind(userAPI)
     ]);
 
   router
     .route("/terms/:userId")
     .get([
-      authController.checkAuthMiddleware.bind(authController),
-      userController.getTopTerms,
-      ResponseMiddlewares.responseHandlerMiddlware.bind(ResponseMiddlewares)
+      authAPI.checkAuthMiddleware.bind(authAPI),
+      userAPI.getTopTerms.bind(userAPI)
     ]);
-
+  router.use(
+    "*",
+    ResponseMiddlewares.responseHandlerMiddlware.bind(ResponseMiddlewares)
+  );
   return router;
 })();

@@ -15,6 +15,7 @@ const itunesSearchBar = props => {
         terms={props.topTerms}
         clicked={props.choosedTerm}
         dialogClose={props.closed}
+        isOpened={props.isTopTermsDialogOpened}
       />
     );
   return (

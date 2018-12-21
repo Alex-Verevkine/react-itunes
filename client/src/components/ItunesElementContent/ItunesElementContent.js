@@ -5,7 +5,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Divider from "../UI/Divider/Divider";
 import AudioPlayer from "../UI/AudioPlayer/AudioPlayer";
 import VideoPlayer from "../UI/VideoPlayer/VideoPlayer";
-import classes from "./itunesElementContent.scss";
+import classes from "./ItunesElementContent.scss";
 /**
  * @desc Component, that contains All data regarding selected itunes object.
  */

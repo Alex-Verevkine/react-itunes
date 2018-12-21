@@ -1,5 +1,8 @@
 module.exports = class ResponseMiddlewares {
   static sendResponse(res, status, message, data) {
+    res.status(status).json(data);
+  }
+  static sendErrorResponse(res, status, message, data) {
     res.status(status).json({
       message,
       obj: data,
@@ -9,7 +12,7 @@ module.exports = class ResponseMiddlewares {
 
   static errorHandlerMiddleware(err, req, res, next) {
     console.error({ err }, "An error occured");
-    this.sendResponse(
+    this.sendErrorResponse(
       res,
       err.status ? err.status : 500,
       err.message ? err.message : "Something went wrong!",
